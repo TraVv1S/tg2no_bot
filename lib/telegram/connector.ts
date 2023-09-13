@@ -12,6 +12,7 @@ export default {
     run: function () {
         bot.start((ctx) => ctx.reply('Добро пожаловать в бот для задач. Пишите свою задачу!\nВаш Telegram id - ' + ctx.from.id));
         bot.on('message', async function (ctx: Context) {
+            console.log(ctx.message);
             ll('newMessage from ' + ctx.message?.from.id);
             if (
                 ctx.message?.from.id != telegramOwnerId
