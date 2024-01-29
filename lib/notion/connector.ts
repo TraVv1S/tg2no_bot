@@ -12,8 +12,9 @@ const notion = new Client({
 const taskDB = env!.NOTION_TASK_DB;
 
 export default {
-    createTask: function (title: string, tgAuthor: string): Promise<CreatePageResponse> {
-        ll('creating task', title, 'from', tgAuthor);
+    createTask: function (title: string, tgAuthor: string, urlInText: string): Promise<CreatePageResponse> {
+        
+        ll('creating task', title, 'from', tgAuthor, 'url', urlInText);
         return notion.pages.create({
             parent: {
                 database_id: taskDB
@@ -40,6 +41,10 @@ export default {
                             }
                         }
                     ]
+                },
+                URL: {
+                    type: "url",
+                    url: urlInText
                 },
                 Status: {
                     type: "select",

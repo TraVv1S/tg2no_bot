@@ -12,7 +12,7 @@ export default {
     run: function () {
         bot.start((ctx) => ctx.reply('Добро пожаловать в бот для задач. Пишите свою задачу!\nВаш Telegram id - ' + ctx.from.id));
         bot.on('message', async function (ctx: Context) {
-            console.log(ctx.message);
+            // console.log(ctx.message);
             ll('newMessage from ' + ctx.message?.from.id);
             if (
                 ctx.message?.from.id != telegramOwnerId
@@ -30,8 +30,14 @@ export default {
                     ll('empty username');
                     return;
                 }
-                const createTaskResult = await notionConnector.createTask(ctx.message.text, ctx.message.from.username);
-                const createdTaskMessage = 'Новая задача - [' + ctx.message.text + '](https://www.notion.so/' + notionConnector.convertTaskToUrl(createTaskResult) + ')';
+                const urlRegex: RegExp = /(https?:\/\/[^\s]+)/g;
+                const urlInText: string = ctx.message.text.match(urlRegex)[0];
+                let newTitle: string = ctx.message.text;
+                if (urlInText) {
+                    newTitle = ctx.message.text.replace(urlInText, "");
+                }
+                const createTaskResult = await notionConnector.createTask(newTitle, ctx.message.from.username, urlInText);
+                const createdTaskMessage = 'Новая задача - [' + newTitle + '](https://www.notion.so/' + notionConnector.convertTaskToUrl(createTaskResult) + ')';
                 await ctx.reply(createdTaskMessage, {
                     parse_mode: "Markdown"
                 });
