@@ -58,7 +58,17 @@ export default {
                         name: 'Telegram'
                     }
                 }
-            }
+            },
+            // children: [
+            //     {
+            //         object: "block",
+            //         paragraph: {
+            //             text: {
+            //                 content: "Lacinato kale is a variety of kale with anosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm."
+            //             }
+            //         }             
+            //     }
+            // ]
 
         });
     },

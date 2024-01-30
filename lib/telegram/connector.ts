@@ -31,12 +31,14 @@ export default {
                     return;
                 }
                 const urlRegex: RegExp = /(https?:\/\/[^\s]+)/g;
-                const urlInText: string = ctx.message.text.match(urlRegex)[0];
+                const urlInText: string[] | null = ctx.message.text.match(urlRegex);
                 let newTitle: string = ctx.message.text;
+                let url: string | null = null;
                 if (urlInText) {
-                    newTitle = ctx.message.text.replace(urlInText, "");
+                    url = urlInText[0];
+                    newTitle = ctx.message.text.replace(url, "");
                 }
-                const createTaskResult = await notionConnector.createTask(newTitle, ctx.message.from.username, urlInText);
+                const createTaskResult = await notionConnector.createTask(newTitle, ctx.message.from.username, url);
                 const createdTaskMessage = 'Новая задача - [' + newTitle + '](https://www.notion.so/' + notionConnector.convertTaskToUrl(createTaskResult) + ')';
                 await ctx.reply(createdTaskMessage, {
                     parse_mode: "Markdown"
